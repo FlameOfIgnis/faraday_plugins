@@ -57,7 +57,11 @@ class NmapXmlParser:
         """
 
         try:
-            return ET.fromstring(xml_output)
+            tree = ET.fromstring(xml_output)
+            if(not tree and not xml_output.endswith('</nmaprun>')):
+                return ET.fromstring(xml_output + '</nmaprun>')
+            else:
+                return tree
         except SyntaxError as err:
             #logger.error("SyntaxError: %s." % (err))
             return None
