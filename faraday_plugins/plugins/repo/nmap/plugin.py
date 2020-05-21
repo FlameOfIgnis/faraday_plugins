@@ -512,6 +512,7 @@ class NmapPlugin(PluginXMLFormat):
 
                 for v in port.vulns:
                     severity = 0
+                    status = "opened"
                     desc = v.desc
                     refs = v.refs
 
@@ -519,8 +520,10 @@ class NmapPlugin(PluginXMLFormat):
                         severity = "high"
                     if re.search(r"ERROR", desc):
                         severity = "unclassified"
+                        status = "closed"
                     if re.search(r"Couldn't", desc):
                         severity = "unclassified"
+                        status = "closed"
                     if v.web:
                         v_id = self.createAndAddVulnWebToService(
                             h_id,
@@ -531,7 +534,8 @@ class NmapPlugin(PluginXMLFormat):
                             ref=refs,
                             severity=severity,
                             website=minterfase,
-                            external_id=v.name)
+                            external_id=v.name,
+                            status=status)
                     else:
                         v_id = self.createAndAddVulnToService(
                             h_id,
@@ -540,7 +544,8 @@ class NmapPlugin(PluginXMLFormat):
                             desc=v.desc,
                             ref=refs,
                             severity=severity,
-                            external_id=v.name)
+                            external_id=v.name,
+                            status=status)
         del parser
         return True
 
