@@ -387,7 +387,7 @@ class Script:
         self.web = re.search("(http-|https-)", self.name)
 
     def __str__(self):
-        return "%s, %s, %s" % (self.name, self.product, self.version)
+        return "%s, %s, %s" % (getattr(self, 'name', False), getattr(self, 'product', False), getattr(self, 'version', False))
 
 
 class Service:
